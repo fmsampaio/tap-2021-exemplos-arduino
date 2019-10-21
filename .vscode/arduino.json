@@ -1,0 +1,6 @@
+{
+    "port": "/dev/ttyACM1",
+    "board": "arduino:avr:uno",
+    "programmer": "AVR ISP",
+    "sketch": "01 - Basics/Fade/Fade.ino"
+}
