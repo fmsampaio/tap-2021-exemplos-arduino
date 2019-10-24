@@ -2,5 +2,5 @@
     "port": "/dev/ttyACM0",
     "board": "arduino:avr:uno",
     "programmer": "AVR ISP",
-    "sketch": "01 - Basics/Ultrassonic/Ultrassonic.ino"
+    "sketch": "01 - Basics/SerialPushbutton/SerialPushbutton.ino"
 }
