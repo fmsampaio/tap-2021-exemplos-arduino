@@ -7,11 +7,14 @@
                 "/home/felipe/Downloads/arduino-1.8.7/arduino-1.8.7/hardware/arduino/avr/**",
                 "/home/felipe/Downloads/arduino-1.8.7/hardware/arduino/avr/**",
                 "/home/felipe/Downloads/arduino-1.8.7/tools/**",
-                "/home/felipe/Downloads/arduino-1.8.7/**"
+                "/home/felipe/Downloads/arduino-1.8.7/**",
+                "/home/felipe/arduino-1.8.7/arduino-1.8.7/hardware/arduino/avr/**",
+                "/home/felipe/arduino-1.8.7/arduino-1.8.7/tools/**"
             ],
             "forcedInclude": [
                 "/home/felipe/Downloads/arduino-1.8.7/arduino-1.8.7/hardware/arduino/avr/cores/arduino/Arduino.h",
-                "/home/felipe/Downloads/arduino-1.8.7/hardware/arduino/avr/cores/arduino/Arduino.h"
+                "/home/felipe/Downloads/arduino-1.8.7/hardware/arduino/avr/cores/arduino/Arduino.h",
+                "/home/felipe/arduino-1.8.7/arduino-1.8.7/hardware/arduino/avr/cores/arduino/Arduino.h"
             ],
             "intelliSenseMode": "gcc-x64",
             "compilerPath": "/usr/bin/gcc",
