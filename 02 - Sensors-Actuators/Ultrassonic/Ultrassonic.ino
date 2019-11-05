@@ -1,24 +1,20 @@
-
 #include <Ultrasonic.h>
 
-#define TRIGGER_PIN  8
-#define ECHO_PIN     7
+Ultrasonic ultrassom(8,7); 
+//e onde esta ligado o trig(8) e o echo(7) respectivamente
+long distancia;
 
-Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN);
-
-void setup()
-  {
-  Serial.begin(9600);
-  }
-
+void setup() {
+Serial.begin(9600); //Habilita Comunicação Serial a uma taxa de 9600 bauds.
+}
+// Função que se repete infinitamente quando a placa é ligada
 void loop()
-  {
-  float cmMsec;
-  long microsec = ultrasonic.timing();
+{
+  distancia = ultrassom.Ranging(CM);// ultrassom.Ranging(CM) retorna a distancia em
+                                    // centímetros(CM) ou polegadas(INC)
+  Serial.print(distancia); //imprime o valor da variável distancia
+  Serial.println("cm");
+  delay(100);
+}
 
-  cmMsec = ultrasonic.convert(microsec, Ultrasonic::CM);
 
-  Serial.print("CM: ");
-  Serial.println(cmMsec);
-  delay(1000);
-  }
