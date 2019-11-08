@@ -1,5 +1,4 @@
 #include <Ultrasonic.h>
-
 Ultrasonic ultrassom(8,7); 
 //e onde esta ligado o trig(8) e o echo(7) respectivamente
 long distancia;
@@ -16,5 +15,4 @@ void loop()
   Serial.println("cm");
   delay(100);
 }
-
 
