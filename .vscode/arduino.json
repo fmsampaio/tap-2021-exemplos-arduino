@@ -2,5 +2,5 @@
     "port": "/dev/ttyACM0",
     "board": "arduino:avr:uno",
     "programmer": "AVR ISP",
-    "sketch": "03 - Ethernet/LEDServer/LEDServer.ino"
+    "sketch": "03 - Ethernet/MQTTSimple/MQTTSimple.ino"
 }
