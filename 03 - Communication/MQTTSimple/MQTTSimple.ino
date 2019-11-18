@@ -18,15 +18,11 @@
 #include <PubSubClient.h>
 
 //TODO Atualizar valores do MAC e IP do servidor MQTT
-byte mac[]    = {0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED};
-String server = "m14.cloudmqtt.com";
-//IPAddress server(192, 168, 0, 101);
-//int port = 1883;
-int port = 12891;
+byte mac[]    = {0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED}; //TODO modificar aqui!!
+IPAddress server(192, 168, 2, 19);
+int port = 1883;
 
-String clientName = "arduinoClient01"; //TODO change it!!
-String username = "vqlvmcfj";
-String password = "Vzw6NIX4voxY";
+String clientName = "arduinoClient01"; //TODO modificar aqui!!
 
 //Aqui são tratadas as mensagens que são recebidas do servidor MQTT
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -51,8 +47,7 @@ void connectToMQTTBroker() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect(clientName.c_str(), username.c_str(), password.c_str())) {
-    //if (client.connect(clientName.c_str())) {
+    if (client.connect(clientName.c_str())) {
       Serial.println("connected");
     } else {
       Serial.print("failed, rc=");
@@ -67,23 +62,19 @@ void connectToMQTTBroker() {
 
 //Aqui acontecem as inscrições em tópicos
 void subscribeToTopics() {
-
-  client.subscribe("topicoEntrada");
-
+  client.subscribe("test"); //TODO modificar aqui!!
 }
 
 void setup()
 {
   Serial.begin(9600);
-  Serial.println("A");
   Ethernet.begin(mac);
   delay(1500);
-  Serial.println("B");
 
-  client.setServer(server.c_str(), port);
+  Serial.println("Interface ethernet iniciada...");
+
+  client.setServer(server, port);
   client.setCallback(callback);
-
-  Serial.println("C");
 
   connectToMQTTBroker();
   subscribeToTopics();
