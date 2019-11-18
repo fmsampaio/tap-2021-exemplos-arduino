@@ -9,17 +9,19 @@ int estadoLED;
  
 void setup()
 {
-    Ethernet.begin(mac); 
-    server.begin();                 
-    pinMode(pinoLED,OUTPUT);
+  Serial.begin(9600);
+  Ethernet.begin(mac);
+                   
+  
+  pinMode(pinoLED,OUTPUT);
 
-    Serial.begin(9600);
-    Serial.print("server is at ");
-    Serial.println(Ethernet.localIP());
+  server.begin();
+  Serial.print("Server is at IP address: ");
+  Serial.println(Ethernet.localIP());
 
-    estadoLED = LOW;
+  estadoLED = LOW;
 
-    digitalWrite(pinoLED, estadoLED);
+  digitalWrite(pinoLED, estadoLED);
 }
  
 void loop() {
@@ -28,16 +30,34 @@ void loop() {
   if (client) { 
     boolean currentLineIsBlank = true;
     String requisicao;
+    int lenReq = 0;
 
     while (client.connected()) {
       
       if (client.available()) { 
         char c = client.read(); 
         requisicao += c;
+        lenReq ++;
         
         if (c == '\n' && currentLineIsBlank ) {     
           Serial.print(requisicao);
-          analisaRequisicao(requisicao);               
+
+          if (requisicao.indexOf("/LED=ON") != -1)  {
+            estadoLED = HIGH;
+          }
+          if (requisicao.indexOf("/LED=OFF") != -1)  {
+            estadoLED = LOW;
+          }
+          
+          digitalWrite(pinoLED, estadoLED);
+          
+          if(estadoLED == HIGH) {
+            Serial.println("LED LIGADO!");
+          }
+          else {
+            Serial.println("LED DESLIGADO!");
+          }
+
           enviaResposta(client);  
           break;
         }
@@ -79,13 +99,3 @@ void enviaResposta(EthernetClient client) {
   client.println("</html>");
 }
 
-void analisaRequisicao(String requisicao) {
-  if (requisicao.indexOf("/LED=ON") != -1)  {
-    estadoLED = HIGH;
-  }
-  if (requisicao.indexOf("/LED=OFF") != -1)  {
-    estadoLED = LOW;
-  }
-  
-  digitalWrite(pinoLED, estadoLED);
-}
