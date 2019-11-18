@@ -4,7 +4,7 @@
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };               
 EthernetServer server(80);                             
  
-int pinoLED = 13;
+int pinoLED = 6;
 int estadoLED;
  
 void setup()
@@ -30,22 +30,20 @@ void loop() {
   if (client) { 
     boolean currentLineIsBlank = true;
     String requisicao;
-    int lenReq = 0;
 
     while (client.connected()) {
       
       if (client.available()) { 
         char c = client.read(); 
         requisicao += c;
-        lenReq ++;
         
         if (c == '\n' && currentLineIsBlank ) {     
           Serial.print(requisicao);
 
-          if (requisicao.indexOf("/LED=ON") != -1)  {
+          if (requisicao.indexOf("GET /LED=ON") != -1)  {
             estadoLED = HIGH;
           }
-          if (requisicao.indexOf("/LED=OFF") != -1)  {
+          if (requisicao.indexOf("GET /LED=OFF") != -1)  {
             estadoLED = LOW;
           }
           
@@ -82,7 +80,7 @@ void loop() {
 void enviaResposta(EthernetClient client) {
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: text/html");
-  client.println(""); //  do not forget this one
+  client.println("");
   client.println("<!DOCTYPE HTML>");
   client.println("<html>");
   
@@ -98,4 +96,3 @@ void enviaResposta(EthernetClient client) {
   client.println("<a href=\"/LED=OFF\"\"><button>Turn Off </button></a><br />");  
   client.println("</html>");
 }
-
