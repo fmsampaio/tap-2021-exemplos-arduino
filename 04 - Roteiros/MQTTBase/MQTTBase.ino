@@ -18,6 +18,7 @@
 #include <PubSubClient.h>
 #include <Ultrasonic.h>
 #include "DHT.h"
+#include <Servo.h>
 
 unsigned long startMillis;  //some global variables available anywhere in the program
 unsigned long currentMillis;
@@ -36,6 +37,10 @@ String clientName = "arduinoClient01"; //TODO modificar aqui!!
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
+int pinPIR = 7;
+
+Servo servo1, servo2;
+
 //Aqui são tratadas as mensagens que são recebidas do servidor MQTT
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
@@ -46,6 +51,16 @@ void callback(char* topic, byte* payload, unsigned int length) {
   
   for (int i=0;i<length;i++) {
     message += (char)payload[i];
+  }
+
+  String topicStr = String(topic);
+  if(topicStr.equals("servo1")) {
+    int ang = message.toInt();
+    servo1.write(ang);
+  }
+  if(topicStr.equals("servo2")) {
+    int ang = message.toInt();
+    servo2.write(ang);
   }
 
   Serial.println(message);
@@ -74,7 +89,8 @@ void connectToMQTTBroker() {
 
 //Aqui acontecem as inscrições em tópicos
 void subscribeToTopics() {
-  client.subscribe("servo0"); 
+  client.subscribe("servo1");
+  client.subscribe("servo2"); 
 }
 
 void publishLuminosity() {
@@ -127,7 +143,20 @@ void setup()
   startMillis = millis();  //initial start time
 
   dht.begin();
+  pinMode(pinPIR, INPUT);
+  servo1.attach(3);
+  servo2.attach(9);
   
+}
+
+void publishPresence() {
+  int presence = digitalRead(pinPIR);
+  if(presence == HIGH) {
+    client.publish("presenca", "Presença detectada!");
+  }
+  else {
+    client.publish("presenca", "");
+  }
 }
 
 void loop()
@@ -144,6 +173,9 @@ void loop()
     publishLuminosity();
     publishDistance();
     publishTempHum();
+    //publishPresence();
+
+
 
     startMillis = currentMillis;  
   }
