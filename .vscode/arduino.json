@@ -2,5 +2,5 @@
     "port": "/dev/ttyACM0",
     "board": "arduino:avr:uno",
     "programmer": "AVR ISP",
-    "sketch": "02 - Sensors-Actuators/BuzzerSimple/BuzzerSimple.ino"
+    "sketch": "02 - Sensors-Actuators/I2CDisplay/I2CDisplay.ino"
 }
