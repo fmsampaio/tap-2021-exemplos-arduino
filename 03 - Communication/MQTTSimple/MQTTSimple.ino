@@ -19,10 +19,20 @@
 
 //TODO Atualizar valores do MAC e IP do servidor MQTT
 byte mac[]    = {0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED}; //TODO modificar aqui!!
-IPAddress server(192, 168, 2, 19);
+
+/** Laptop server **/
+String server = "192.168.0.42";
 int port = 1883;
 
-String clientName = "arduinoClient01"; //TODO modificar aqui!!
+
+/** MQTT TAP Server **/
+/*String server = "m14.cloudmqtt.com";
+int port = 12891;
+String username = "vqlvmcfj";
+String password = "Vzw6NIX4voxY";
+*/
+
+String clientName = "arduinoClientFelipe"; //TODO modificar aqui!!
 
 //Aqui são tratadas as mensagens que são recebidas do servidor MQTT
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -42,11 +52,13 @@ void callback(char* topic, byte* payload, unsigned int length) {
 EthernetClient ethClient;
 PubSubClient client(ethClient);
 
+int cont = 0;
+
 void connectToMQTTBroker() {
-    Serial.println("Aqui!");
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
+    //if (client.connect(clientName.c_str(), username.c_str(), password.c_str())) {
     if (client.connect(clientName.c_str())) {
       Serial.println("connected");
     } else {
@@ -72,8 +84,9 @@ void setup()
   delay(1500);
 
   Serial.println("Interface ethernet iniciada...");
+  Serial.println(Ethernet.localIP());
 
-  client.setServer(server, port);
+  client.setServer(server.c_str(), port);
   client.setCallback(callback);
 
   connectToMQTTBroker();
@@ -87,6 +100,12 @@ void loop()
     connectToMQTTBroker();
     subscribeToTopics();
   }
+
+  String contStr(cont);
+  Serial.println(contStr.c_str());
+  client.publish("contagem",contStr.c_str()); 
+  cont += 1;
+  delay(1000);
   
   client.loop();
 }
