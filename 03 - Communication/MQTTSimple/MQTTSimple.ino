@@ -77,6 +77,14 @@ void subscribeToTopics() {
   client.subscribe("test"); //TODO modificar aqui!!
 }
 
+void publishContagem() {
+  String contStr(cont);
+  Serial.println(contStr.c_str());
+  client.publish("contagem",contStr.c_str()); 
+  cont += 1;
+  delay(1000);
+}
+
 void setup()
 {
   Serial.begin(9600);
@@ -101,11 +109,7 @@ void loop()
     subscribeToTopics();
   }
 
-  String contStr(cont);
-  Serial.println(contStr.c_str());
-  client.publish("contagem",contStr.c_str()); 
-  cont += 1;
-  delay(1000);
+  publishContagem();
   
   client.loop();
 }
